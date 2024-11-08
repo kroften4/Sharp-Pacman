@@ -19,6 +19,7 @@ namespace Pacman
 
         public Direction? ChooseDirection(GameState gameState)
         {
+            // TODO: fix shitty code, add an option to select algorythm
             List<Direction> allDirections = new List<Direction> { 
                 Direction.Right, Direction.Left, Direction.Up, Direction.Down 
             };
