@@ -12,45 +12,41 @@ namespace Pacman
 
         public Actors()
         {
-            this.list = new List<Actor>();
+            list = new List<Actor>();
         }
         public Actors(List<Actor> actorsList)
         {
-            this.list = actorsList;
-        }
-        public Actors(List<Vector2D> actorsPositions)
-        {
-            this.list = new List<Actor>();
-            foreach (Vector2D position in actorsPositions)
-            {
-                this.list.Add(new Actor(position));
-            }
+            list = actorsList;
         }
 
-        virtual public Actors Update(GameState gameState)
+        virtual public GameState Update(GameState gameState, Queue<ConsoleKey> keyQueue)
         {
-            List<Actor> newActorsList = new List<Actor>();
-            foreach(Actor actor in this.list)
+            GameState newState = gameState;
+            foreach(Actor actor in list)
             {
-                var newActor = actor.Update(gameState);
-                if (newActor != null)
-                    newActorsList.Add(newActor);
+                newState = actor.Update(newState, keyQueue);
             }
-            return new Actors(newActorsList);
+            return newState ?? gameState;
         }
 
         public void Add(Actor actor)
         {
-            this.list.Add(actor);
+            list.Add(actor);
+        }
+        public Actors Removed(Actor actor)
+        {
+            List<Actor> newList = new List<Actor>(list);
+            newList.Remove(actor);
+            return new Actors(newList);
         }
 
         public bool Contains(Actor actor)
         {
-            return this.list.Contains(actor);
+            return list.Contains(actor);
         }
-        public bool Contains(Vector2D position)
+        public bool HasActorAt(Vector2D position)
         {
-            foreach (Actor actor in this.list)
+            foreach (Actor actor in list)
             {
                 if (actor.position.x == position.x && actor.position.y == position.y)
                     return true;

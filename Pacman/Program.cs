@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Runtime.CompilerServices;
 
 namespace Pacman
 {
@@ -26,17 +27,11 @@ namespace Pacman
             Queue<ConsoleKey> keyQueue = new Queue<ConsoleKey>();
 
             // Run the game
-            /* TODO: implement Collide methods for all actors and GameState.
-            * After updating every actor the collide method will check
-            * for collisions and return updated State instead of Actor
-            * 
-            * Also there's no need to update walls
-            */
             while (true)
             {
                 // Draw
                 Console.Clear();
-                foreach (Actor actor in gameState.actors)
+                foreach (Actor actor in gameState.actors.list)
                 {
                     Console.SetCursorPosition(actor.position.x, actor.position.y);
                     Console.ForegroundColor = actor.Color;
@@ -50,11 +45,22 @@ namespace Pacman
                     keyQueue.Enqueue(Console.ReadKey().Key);
                 gameState = gameState.Update(keyQueue);
 
-                if (gameState.foods.list.Count() == 0)
+                switch (gameState.status)
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("MAX WIN");
-                    return;
+                    case GameStatus.Won:
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.WriteLine("MAX WIN");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Press any key to exit...");
+                        Console.ReadKey();
+                        return;
+                    case GameStatus.Lost:
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine("GAME OVER");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine("Press any key to exit...");
+                        Console.ReadKey();
+                        return;
                 }
 
                 Thread.Sleep(300);

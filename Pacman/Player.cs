@@ -23,7 +23,7 @@ namespace Pacman
         public Player(Vector2D position): base(position)
         {
             this.position = position;
-            this.direction = Direction.Up;
+            direction = Direction.Up;
         }
         public Player(Vector2D position, Direction direction) : base(position)
         {
@@ -33,7 +33,7 @@ namespace Pacman
         
         public Player Move()
         {
-            Vector2D newPos = new Vector2D(this.position.x, this.position.y);
+            Vector2D newPos = new Vector2D(position.x, position.y);
             switch (direction)
             {
                 case Direction.Left:
@@ -49,17 +49,17 @@ namespace Pacman
                     newPos.y += 1;
                     break;
             }
-            return new Player(newPos, this.direction);
+            return new Player(newPos, direction);
         }
 
         public Player Turn(Direction direction)
         {
-            return new Player(this.position, direction);
+            return new Player(position, direction);
         }
 
-        public Player Update(GameState gameState, Queue<ConsoleKey> keyQueue)
+        override public GameState Update(GameState gameState, Queue<ConsoleKey> keyQueue)
         {
-            Direction newDirection = this.direction;
+            Direction newDirection = direction;
             if (keyQueue.Count() != 0)
             {
                 switch (keyQueue.Dequeue())
@@ -78,16 +78,16 @@ namespace Pacman
                         break;
                 }
             }
-            Player newPlayer = this.Turn(newDirection);
+            Player newPlayer = Turn(newDirection);
             newPlayer = newPlayer.Move();
-            if (gameState.walls.Contains(newPlayer.position))
+            if (gameState.Walls.HasActorAt(newPlayer.position)) 
             {
-                newPlayer = this.Move();
-                if (gameState.walls.Contains(newPlayer.position))
+                newPlayer = Move();
+                if (gameState.Walls.HasActorAt(newPlayer.position))
                     newPlayer = this;
             }
-
-            return newPlayer;
+            gameState.Player = newPlayer;
+            return gameState;
         }
     }
 }

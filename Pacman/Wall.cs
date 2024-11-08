@@ -11,5 +11,10 @@ namespace Pacman
         public override char Character => '#';
         public override ConsoleColor Color => ConsoleColor.Blue;
         public Wall(Vector2D position) : base(position) { }
+
+        public override GameState Update(GameState gameState, Queue<ConsoleKey> keyQueue)
+        {
+            return gameState;
+        }
     }
 }

@@ -18,8 +18,8 @@ namespace Pacman
         }
         public Vector2D() 
         {
-            this.x = 0;
-            this.y = 0;
+            x = 0;
+            y = 0;
         }
     }
 }

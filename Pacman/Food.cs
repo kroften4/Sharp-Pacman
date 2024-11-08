@@ -13,13 +13,12 @@ namespace Pacman
         public override ConsoleColor Color => ConsoleColor.Red;
         public Food(Vector2D position) : base(position) { }
 
-        override public Actor Update(GameState gameState)
+        override public GameState Update(GameState gameState, Queue<ConsoleKey> keyQueue)
         {
-            Vector2D playerPos = gameState.player.position;
+            Vector2D playerPos = gameState.Player.position;
             if (playerPos.x == position.x && playerPos.y == position.y)
-                // TODO: add points here (should provide access to game state somehow
-                return null;
-            return this;
+                return new GameState(gameState.status, gameState.actors.Removed(this));
+            return gameState;
         }
     }
 }
