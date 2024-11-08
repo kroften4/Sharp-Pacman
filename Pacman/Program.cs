@@ -10,6 +10,18 @@ namespace Pacman
 {
     internal class Program
     {
+        static void DrawGame(GameState gameState)
+        {
+            Console.Clear();
+            foreach (Actor actor in gameState.actors.list)
+            {
+                Console.SetCursorPosition(actor.position.x, actor.position.y);
+                Console.ForegroundColor = actor.Color;
+                Console.Write(actor.Character);
+            }
+            Console.SetCursorPosition(10, 12);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
         static void Main(string[] args)
         {
             // Parse the level txt file to GameState
@@ -25,24 +37,19 @@ namespace Pacman
             }
             GameState gameState = GameState.Create(level);
             Queue<ConsoleKey> keyQueue = new Queue<ConsoleKey>();
+            DrawGame(gameState);
 
             // Run the game
             while (true)
             {
-                // Draw
-                Console.Clear();
-                foreach (Actor actor in gameState.actors.list)
-                {
-                    Console.SetCursorPosition(actor.position.x, actor.position.y);
-                    Console.ForegroundColor = actor.Color;
-                    Console.Write(actor.Character);
-                }
-                Console.SetCursorPosition(10, 12);
-                Console.ForegroundColor = ConsoleColor.White;
+                Thread.Sleep(250);
 
-                // TODO: make key detection more responsive
                 if (Console.KeyAvailable)
-                    keyQueue.Enqueue(Console.ReadKey().Key);
+                {
+                    keyQueue.Enqueue(Console.ReadKey(true).Key);
+                    if (keyQueue.Count() > 4)
+                        keyQueue.Dequeue();
+                }
                 gameState = gameState.Update(keyQueue);
 
                 switch (gameState.status)
@@ -63,7 +70,7 @@ namespace Pacman
                         return;
                 }
 
-                Thread.Sleep(300);
+                DrawGame(gameState);
             }
         }
     }

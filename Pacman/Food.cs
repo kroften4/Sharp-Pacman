@@ -9,8 +9,8 @@ namespace Pacman
 {
     internal class Food : Actor
     {
-        public override char Character => '0';
-        public override ConsoleColor Color => ConsoleColor.Red;
+        public override char Character => '.';
+        public override ConsoleColor Color => ConsoleColor.Green;
         public Food(Vector2D position) : base(position) { }
 
         override public GameState Update(GameState gameState, Queue<ConsoleKey> keyQueue)

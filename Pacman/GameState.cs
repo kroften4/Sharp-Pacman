@@ -68,7 +68,7 @@ namespace Pacman
                         case '@':
                             newActor = new Player(actorPos);
                             break;
-                        case '0':
+                        case '.':
                             newActor = new Food(actorPos);
                             break;
                         case 'M':
@@ -90,6 +90,6 @@ namespace Pacman
             if (newState.Foods.list.Count() == 0)
                 newState.status = GameStatus.Won;
             return newState;
-        }
+         }
     }
 }

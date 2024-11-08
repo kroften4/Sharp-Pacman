@@ -7,17 +7,18 @@ using System.Threading.Tasks;
 
 namespace Pacman
 {
+    public enum Direction
+    {
+        Left,
+        Right,
+        Up,
+        Down
+    }
+
     internal class Player : Actor
     {
         public override char Character => '@';
         public override ConsoleColor Color => ConsoleColor.DarkYellow;
-        public enum Direction
-        {
-            Left,
-            Right,
-            Up,
-            Down
-        }
         public Direction direction;
 
         public Player(Vector2D position): base(position)
